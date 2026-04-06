@@ -16,6 +16,7 @@
 	>
 		<template #body-content>
 			<div class="space-y-4">
+				<!-- Email -->
 				<FormControl
 					v-model="member.email"
 					:label="__('Email')"
@@ -24,6 +25,8 @@
 					:required="true"
 					@keyup.enter="addMember()"
 				/>
+
+				<!-- Tên -->
 				<div class="flex items-center gap-3">
 					<FormControl
 						v-model="member.first_name"
@@ -40,6 +43,31 @@
 						class="w-full"
 					/>
 				</div>
+
+				<!-- Info banner: email sẽ được gửi -->
+				<div class="flex items-start gap-2 rounded-md border border-blue-200 bg-blue-50 px-3 py-2.5">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="15"
+						height="15"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						class="mt-0.5 shrink-0 text-blue-500"
+					>
+						<circle cx="12" cy="12" r="10" />
+						<line x1="12" y1="8" x2="12" y2="12" />
+						<line x1="12" y1="16" x2="12.01" y2="16" />
+					</svg>
+					<p class="text-xs leading-relaxed text-blue-700">
+						{{ __('A welcome email with a password setup link will be sent automatically to the member\'s email address.') }}
+					</p>
+				</div>
+
+				<!-- Roles -->
 				<div class="flex flex-col gap-2">
 					<div class="text-sm text-ink-gray-5">
 						{{ __('Roles') }}
@@ -149,18 +177,17 @@ const addMember = async (close?: () => void) => {
 
 	submitting.value = true
 	try {
-		const user = await call('frappe.client.insert', {
-			doc: {
-				doctype: 'User',
-				email: member.email.trim(),
-				first_name: member.first_name.trim() || undefined,
-				last_name: member.last_name.trim() || undefined,
-			},
+		const user = await call('lms.lms.api.create_user_with_password', {
+			email: member.email.trim(),
+			first_name: member.first_name.trim() || '',
+			last_name: member.last_name.trim() || '',
 		})
 
 		await assignRoles(user.name)
 
-		toast.success(__('Member added successfully'))
+		toast.success(
+			__('Member added! A welcome email with password setup link has been sent to {0}', [member.email.trim()])
+		)
 		emit('created', user)
 		resetForm()
 		close?.()

@@ -1435,6 +1435,45 @@ def get_certification_details(course: str):
 
 
 @frappe.whitelist()
+def create_user_with_password(
+	email: str,
+	first_name: str = "",
+	last_name: str = "",
+	password: str = "",
+	roles: list = None,
+):
+	"""Tạo tài khoản người dùng mới.
+	- Nếu có password: set mật khẩu ngay, sinh viên đăng nhập bằng mật khẩu đó.
+	- Nếu không có password: gửi email chào mừng kèm link để sinh viên tự đặt mật khẩu.
+	"""
+	frappe.only_for("Moderator")
+
+	if not email:
+		frappe.throw(_("Email is required."))
+
+	if frappe.db.exists("User", email):
+		frappe.throw(_("A user with this email already exists."))
+
+	user_doc = frappe.new_doc("User")
+	user_doc.email = email.strip()
+	user_doc.first_name = first_name.strip() if first_name else ""
+	user_doc.last_name = last_name.strip() if last_name else ""
+
+	if password:
+		# Admin đã đặt sẵn mật khẩu — không cần gửi link đặt lại
+		user_doc.new_password = password
+		user_doc.send_welcome_email = 0
+		user_doc.insert(ignore_permissions=True)
+	else:
+		# Không có mật khẩu — để Frappe gửi email chào mừng kèm link đặt mật khẩu
+		user_doc.send_welcome_email = 1
+		user_doc.insert(ignore_permissions=True)
+
+	return user_doc.as_dict()
+
+
+
+@frappe.whitelist()
 def save_role(user: str, role: str, value: int):
 	frappe.only_for("Moderator")
 	if role not in LMS_ROLES:

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>Smoke Suite Testcase Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #1f2937; }
+    h1 { margin-bottom: 16px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #cbd5e1; padding: 10px; vertical-align: top; text-align: left; }
+    th { background: #0b3b73; color: white; }
+    tr:nth-child(even) { background: #f8fafc; }
+  </style>
+</head>
+<body>
+  <h1>Smoke Suite Testcase Report</h1>
+  <table>
+    <thead><tr><th>ID</th><th>Test Case Description</th><th>Test Case Procedure</th><th>Expected Output</th><th>Test date</th><th>Result</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>TC01</td><td>Kiểm tra đăng nhập thành công và chuyển hướng về Dashboard.</td><td>Mở trang login, nhập Administrator/admin và nhấn Đăng nhập.</td><td>URL chuyển hướng về trang /app hoặc /desk.</td><td>2026-04-07</td><td>Passed</td><td>Xác nhận khả năng truy cập cơ bản.</td></tr><tr><td>TC21</td><td>Sinh viên đã đăng ký có thể truy cập link tham gia lớp học trực tuyến.</td><td>Đăng nhập sinh viên, mở tab Classes của Batch hiện tại.</td><td>Nút &#x27;Join&#x27; hiển thị và dẫn đến link zoom/meeting mẫu.</td><td>2026-04-07</td><td>Passed</td><td>Xác nhận tính năng đào tạo trực tiếp (Live Class) hoạt động.</td></tr><tr><td>TC24</td><td>Huy hiệu &#x27;Fast Learner&#x27; được cấp khi hoàn thành khóa học nhanh.</td><td>Kiểm tra API huy hiệu của người dùng đã hoàn thành khóa học.</td><td>Huy hiệu xuất hiện trong danh sách badges của người dùng.</td><td>2026-04-07</td><td>Passed</td><td>Kiểm tra hệ thống Gamification và Badge cấp tự động.</td></tr><tr><td>TC26</td><td>Admin tạo người dùng mới và kiểm tra email chào mừng.</td><td>Tạo user qua backend và kiểm tra hàng chờ email.</td><td>Email chào mừng được tạo thành công trong hàng chờ.</td><td>2026-04-07</td><td>Passed</td><td>Xác nhận tính năng Admin và Email.</td></tr><tr><td>TC28</td><td>Trang thống kê hiển thị ít nhất 100 người dùng.</td><td>Đăng nhập Admin/Moderator, mở trang /lms/statistics.</td><td>Biểu đồ/Thẻ thông tin hiển thị số lượng User &gt;= 100.</td><td>2026-04-07</td><td>Passed</td><td>Kiểm tra tính năng Dashboard báo cáo.</td></tr><tr><td>TC29</td><td>Kiểm tra giao diện hiển thị sạch sẽ trên mobile viewport.</td><td>Thiết lập kích thước trình duyệt 390x844, mở trang chủ.</td><td>Thanh điều hướng mobile hiển thị và không có lỗi tràn khung hình ngang.</td><td>2026-04-07</td><td>Passed</td><td>Xác nhận tính Responsive của giao diện.</td></tr><tr><td>TC34</td><td>Sinh viên có thể đăng bình luận trong phần thảo luận của Batch.</td><td>Đăng nhập sinh viên, mở tab Discussions, nhập bình luận và nhấn Post.</td><td>Bình luận vừa nhập xuất hiện ngay lập tức trong danh sách thảo luận.</td><td>2026-04-07</td><td>Passed</td><td>Kiểm tra tính tương tác cộng đồng (Social Learning).</td></tr><tr><td>TC53</td><td>Xác nhận các liên kết điều hướng chính hoạt động.</td><td>Nhấn lần lượt các mục Courses, Batches, Statistics trên Sidebar.</td><td>Các trang tương ứng tải thành công và URL thay đổi đúng.</td><td>2026-04-07</td><td>Passed</td><td>Test tổng quát về cấu trúc Dashboard.</td></tr>
+    </tbody>
+  </table>
+</body>
+</html>

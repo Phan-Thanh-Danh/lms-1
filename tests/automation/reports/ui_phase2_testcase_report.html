@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>Báo cáo kiểm thử UI Phase 2</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 24px; color: #1f2937; line-height: 1.5; }
+    h1 { margin-bottom: 16px; color: #1e40af; border-bottom: 2px solid #1e40af; padding-bottom: 8px; }
+    table { border-collapse: collapse; width: 100%; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #cbd5e1; padding: 12px; vertical-align: top; text-align: left; }
+    th { background: #1e40af; color: white; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; }
+    tr:nth-child(even) { background: #f8fafc; }
+    tr:hover { background: #f1f5f9; }
+    .status-passed { color: #166534; font-weight: bold; }
+    .status-failed { color: #991b1b; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Báo cáo kết quả kiểm thử UI Phase 2</h1>
+  <table>
+    <thead><tr><th>ID</th><th>Mô tả Test Case</th><th>Quy trình thực hiện</th><th>Kết quả mong đợi</th><th>Ngày chạy</th><th>Kết quả</th><th>Ghi chú</th></tr></thead>
+    <tbody>
+      <tr><td>UI21</td><td>Học viên có thể đăng ký vào khóa học miễn phí từ giao diện chi tiết khóa học.</td><td>Đăng nhập bằng tài khoản học viên chưa đăng ký. Mở trang chi tiết khóa học miễn phí và nhấn Start Learning.</td><td>Hệ thống tạo đăng ký (enrollment) thành công và điều hướng học viên vào bài học đầu tiên.</td><td>2026-04-07</td><td>Đạt (Passed)</td><td>Luồng đăng ký có tác động đến dữ liệu thành viên, phù hợp kiểm thử ở Phase 2.</td></tr><tr><td>UI22</td><td>Trang bài học tự động cập nhật tiến độ khi học viên mở bài học chưa hoàn thành.</td><td>Reset tiến độ về 0, đăng nhập học viên đã đăng ký, mở một bài học bất kỳ.</td><td>Tiến độ hiển thị trên giao diện lớn hơn 0% và trường progress trong hệ thống được cập nhật.</td><td>2026-04-07</td><td>Đạt (Passed)</td><td>Xác nhận logic tự động cập nhật tiến độ (Auto-update progress) của hệ thống.</td></tr><tr><td>UI23</td><td>Học viên đã hoàn thành khóa học nhìn thấy nút Get Certificate.</td><td>Đăng nhập bằng tài khoản đã hoàn thành toàn bộ bài học và mở trang chi tiết khóa học đó.</td><td>Trang chi tiết khóa học hiển thị nút Get Certificate để học viên nhận chứng chỉ.</td><td>2026-04-07</td><td>Đạt (Passed)</td><td>Xác nhận trạng thái hoàn thành (Completion state) đã được giao diện nhận diện đúng.</td></tr><tr><td>UI24</td><td>Trang Thông báo hiển thị đúng dữ liệu thông báo chưa đọc được tạo từ hệ thống.</td><td>Tạo một thông báo chưa đọc cho học viên, đăng nhập và kiểm tra trang Notifications.</td><td>Danh sách Unread hiển thị đúng tiêu đề và nội dung thông báo vừa tạo.</td><td>2026-04-07</td><td>Đạt (Passed)</td><td>Kiểm tra tính đồng bộ nội dung thông báo giữa Backend và Frontend.</td></tr><tr><td>UI25</td><td>Người dùng có thể đánh dấu thông báo là đã đọc trên giao diện.</td><td>Mở trang Notifications, nhấn nút đánh dấu đã đọc trên một thông báo, sau đó kiểm tra tab Read.</td><td>Thông báo biến mất khỏi tab Unread và xuất hiện chính xác ở tab Read.</td><td>2026-04-07</td><td>Đạt (Passed)</td><td>Kiểm tra tương tác người dùng và thay đổi trạng thái thông báo.</td></tr><tr><td>UI26</td><td>Lần làm Quiz đầu tiên được ghi nhận thành công vào hệ thống.</td><td>Đăng nhập, mở một bài Quiz, trả lời các câu hỏi và nhấn nộp bài.</td><td>Hệ thống hiển thị bảng tổng kết (Quiz Summary) và ghi lại 1 lần nộp bài (Submission).</td><td>2026-04-07</td><td>Đạt (Passed)</td><td>Quy trình quan trọng nhất trong việc đánh giá kết quả học tập.</td></tr><tr><td>UI27</td><td>Hệ thống chặn học viên làm Quiz khi đã đạt tối đa số lần thử cho phép.</td><td>Sử dụng tài khoản đã làm đủ 3 lần, mở bài Quiz yêu cầu tối đa 3 lần làm bài.</td><td>Trang Quiz hiển thị thông báo đã hết lượt làm bài và không hiển thị nút bắt đầu.</td><td>2026-04-07</td><td>Đạt (Passed)</td><td>Xác nhận tính năng giới hạn lượt làm bài (Attempt limits) hoạt động đúng.</td></tr><tr><td>UI28</td><td>Bảng tổng kết Quiz hiển thị đúng tỷ lệ 80% khi làm đúng 4/5 câu.</td><td>Thực hiện làm Quiz với 4 câu trả lời đúng và 1 câu trả lời sai, sau đó nộp bài.</td><td>Trang kết quả hiển thị thông điệp &#x27;You got 80% correct answers&#x27;.</td><td>2026-04-07</td><td>Đạt (Passed)</td><td>Xác nhận thuật toán tính điểm và hiển thị kết quả trên giao diện.</td></tr><tr><td>UI29</td><td>Giao diện nộp bài tập (Assignment) chấp nhận tệp PDF hợp lệ.</td><td>Đăng nhập học viên, mở trang nộp bài tập, tải lên một tệp PDF và nhấn Save.</td><td>Tệp được tải lên thành công và hệ thống tạo một bản ghi nộp bài tập mới.</td><td>2026-04-07</td><td>Đạt (Passed)</td><td>Kiểm tra tính năng lưu trữ và quản lý tệp tin nộp bài của sinh viên.</td></tr><tr><td>UI30</td><td>Giao diện nộp bài tập từ chối tệp tin không hợp lệ (ví dụ: .EXE).</td><td>Thực hiện tải lên một tệp có đuôi .EXE vào form nộp bài tập.</td><td>Hệ thống hiển thị thông báo lỗi &#x27;Only PDF files are allowed&#x27; và từ chối lưu bài.</td><td>2026-04-07</td><td>Đạt (Passed)</td><td>Kiểm tra tính năng bảo mật và ràng buộc định dạng tệp tin tải lên.</td></tr>
+    </tbody>
+  </table>
+</body>
+</html>

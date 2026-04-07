@@ -1,0 +1,219 @@
+{
+  "users": {
+    "admin": {
+      "email": "Administrator",
+      "password": "admin",
+      "username": "administrator"
+    },
+    "course_user": {
+      "email": "automation.student@example.com",
+      "password": "Automation@123",
+      "username": "course"
+    },
+    "free_enroll_user": {
+      "email": "automation.enroll@example.com",
+      "password": "Automation@123",
+      "username": "enroll"
+    },
+    "completed_user": {
+      "email": "automation.completed@example.com",
+      "password": "Automation@123",
+      "username": "completed"
+    },
+    "batch_user": {
+      "email": "automation.batch@example.com",
+      "password": "Automation@123",
+      "username": "batch"
+    },
+    "quiz_attempt_user": {
+      "email": "automation.quiz.attempt@example.com",
+      "password": "Automation@123",
+      "username": "quiz"
+    },
+    "quiz_timer_user": {
+      "email": "automation.quiz.timer@example.com",
+      "password": "Automation@123",
+      "username": "quiz-timer"
+    },
+    "quiz_single_user": {
+      "email": "automation.quiz.single@example.com",
+      "password": "Automation@123",
+      "username": "quiz-single"
+    },
+    "quiz_score_user": {
+      "email": "automation.quiz.score@example.com",
+      "password": "Automation@123",
+      "username": "quiz-score"
+    },
+    "quiz_show_answers_user": {
+      "email": "automation.quiz.answers@example.com",
+      "password": "Automation@123",
+      "username": "quiz-answers"
+    },
+    "quiz_max_user": {
+      "email": "automation.quiz.max@example.com",
+      "password": "Automation@123",
+      "username": "quiz-max"
+    },
+    "quiz_retake_user": {
+      "email": "automation.quiz.retake@example.com",
+      "password": "Automation@123",
+      "username": "quiz-retake"
+    },
+    "shuffle_user": {
+      "email": "automation.quiz.shuffle@example.com",
+      "password": "Automation@123",
+      "username": "quiz-shuffle"
+    },
+    "badge_user": {
+      "email": "automation.badge@example.com",
+      "password": "Automation@123",
+      "username": "badge"
+    },
+    "upgrade_user": {
+      "email": "automation.upgrade@example.com",
+      "password": "Automation@123",
+      "username": "upgrade"
+    },
+    "instructor": {
+      "email": "automation.instructor@example.com",
+      "password": "Automation@123",
+      "username": "automation"
+    }
+  },
+  "files": {
+    "guide_pdf_url": "/files/automation-guide.pdf",
+    "avatar_png_url": "/files/automation-avatar.png",
+    "badge_png_url": "/files/automation-avatar.png"
+  },
+  "courses": {
+    "free": {
+      "name": "automation-free-course",
+      "title": "Automation Free Course",
+      "video_route": "1-1",
+      "formatted_route": "1-2",
+      "pdf_route": "1-3",
+      "video_lesson": "0036 Automation Video Lesson",
+      "formatted_lesson": "0037 Automation Formatted Lesson",
+      "pdf_lesson": "0038 Automation PDF Lesson"
+    },
+    "agile": {
+      "name": "automation-agile-sprint-course",
+      "title": "Automation Agile Sprint Course"
+    },
+    "paid": {
+      "name": "automation-paid-course",
+      "title": "Automation Paid Course"
+    },
+    "draft": {
+      "name": "automation-draft-course",
+      "title": "Automation Draft Course"
+    }
+  },
+  "quizzes": {
+    "core": {
+      "name": "automation-core-quiz",
+      "title": "Automation Core Quiz",
+      "questions": [
+        {
+          "name": "QTS-2026-00039",
+          "correct": "Correct Answer 1",
+          "wrong": "Wrong Answer 1"
+        },
+        {
+          "name": "QTS-2026-00040",
+          "correct": "Correct Answer 2",
+          "wrong": "Wrong Answer 2"
+        },
+        {
+          "name": "QTS-2026-00041",
+          "correct": "Correct Answer 3",
+          "wrong": "Wrong Answer 3"
+        },
+        {
+          "name": "QTS-2026-00042",
+          "correct": "Correct Answer 4",
+          "wrong": "Wrong Answer 4"
+        },
+        {
+          "name": "QTS-2026-00043",
+          "correct": "Correct Answer 5",
+          "wrong": "Wrong Answer 5"
+        }
+      ]
+    },
+    "shuffle": {
+      "name": "automation-shuffle-quiz",
+      "title": "Automation Shuffle Quiz",
+      "questions": [
+        {
+          "name": "QTS-2026-00044",
+          "correct": "Shuffle Correct 1",
+          "wrong": "Shuffle Wrong 1"
+        },
+        {
+          "name": "QTS-2026-00045",
+          "correct": "Shuffle Correct 2",
+          "wrong": "Shuffle Wrong 2"
+        },
+        {
+          "name": "QTS-2026-00046",
+          "correct": "Shuffle Correct 3",
+          "wrong": "Shuffle Wrong 3"
+        },
+        {
+          "name": "QTS-2026-00047",
+          "correct": "Shuffle Correct 4",
+          "wrong": "Shuffle Wrong 4"
+        }
+      ]
+    },
+    "badge": {
+      "name": "automation-badge-quiz",
+      "title": "Automation Badge Quiz",
+      "questions": [
+        {
+          "name": "QTS-2026-00048",
+          "correct": "Badge Correct 1",
+          "wrong": "Badge Wrong 1"
+        },
+        {
+          "name": "QTS-2026-00049",
+          "correct": "Badge Correct 2",
+          "wrong": "Badge Wrong 2"
+        },
+        {
+          "name": "QTS-2026-00050",
+          "correct": "Badge Correct 3",
+          "wrong": "Badge Wrong 3"
+        }
+      ]
+    }
+  },
+  "assignment": {
+    "name": "ASG-00051",
+    "title": "Automation PDF Assignment"
+  },
+  "program": {
+    "name": "Automation Program",
+    "title": "Automation Program"
+  },
+  "batch": {
+    "name": "automation-live-batch",
+    "title": "Automation Live Batch"
+  },
+  "live_classes": {
+    "today": {
+      "name": "automation_live_class_today",
+      "title": "Automation Live Class Today"
+    },
+    "future": {
+      "name": "automation_live_class_future",
+      "title": "Automation Live Class Future"
+    }
+  },
+  "badges": {
+    "fast_learner": "Automation Fast Learner",
+    "master_of_quiz": "Automation Master of Quiz"
+  }
+}

@@ -1,0 +1,12 @@
+# Smoke Suite Testcase Report
+
+| ID | Test Case Description | Test Case Procedure | Expected Output | Test date | Result | Note |
+| --- | --- | --- | --- | --- | --- | --- |
+| TC01 | Kiểm tra đăng nhập thành công và chuyển hướng về Dashboard. | Mở trang login, nhập Administrator/admin và nhấn Đăng nhập. | URL chuyển hướng về trang /app hoặc /desk. | 2026-04-07 | Passed | Xác nhận khả năng truy cập cơ bản. |
+| TC21 | Sinh viên đã đăng ký có thể truy cập link tham gia lớp học trực tuyến. | Đăng nhập sinh viên, mở tab Classes của Batch hiện tại. | Nút 'Join' hiển thị và dẫn đến link zoom/meeting mẫu. | 2026-04-07 | Passed | Xác nhận tính năng đào tạo trực tiếp (Live Class) hoạt động. |
+| TC24 | Huy hiệu 'Fast Learner' được cấp khi hoàn thành khóa học nhanh. | Kiểm tra API huy hiệu của người dùng đã hoàn thành khóa học. | Huy hiệu xuất hiện trong danh sách badges của người dùng. | 2026-04-07 | Passed | Kiểm tra hệ thống Gamification và Badge cấp tự động. |
+| TC26 | Admin tạo người dùng mới và kiểm tra email chào mừng. | Tạo user qua backend và kiểm tra hàng chờ email. | Email chào mừng được tạo thành công trong hàng chờ. | 2026-04-07 | Passed | Xác nhận tính năng Admin và Email. |
+| TC28 | Trang thống kê hiển thị ít nhất 100 người dùng. | Đăng nhập Admin/Moderator, mở trang /lms/statistics. | Biểu đồ/Thẻ thông tin hiển thị số lượng User >= 100. | 2026-04-07 | Passed | Kiểm tra tính năng Dashboard báo cáo. |
+| TC29 | Kiểm tra giao diện hiển thị sạch sẽ trên mobile viewport. | Thiết lập kích thước trình duyệt 390x844, mở trang chủ. | Thanh điều hướng mobile hiển thị và không có lỗi tràn khung hình ngang. | 2026-04-07 | Passed | Xác nhận tính Responsive của giao diện. |
+| TC34 | Sinh viên có thể đăng bình luận trong phần thảo luận của Batch. | Đăng nhập sinh viên, mở tab Discussions, nhập bình luận và nhấn Post. | Bình luận vừa nhập xuất hiện ngay lập tức trong danh sách thảo luận. | 2026-04-07 | Passed | Kiểm tra tính tương tác cộng đồng (Social Learning). |
+| TC53 | Xác nhận các liên kết điều hướng chính hoạt động. | Nhấn lần lượt các mục Courses, Batches, Statistics trên Sidebar. | Các trang tương ứng tải thành công và URL thay đổi đúng. | 2026-04-07 | Passed | Test tổng quát về cấu trúc Dashboard. |

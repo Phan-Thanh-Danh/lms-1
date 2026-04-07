@@ -1,0 +1,6 @@
+# Quick Suite Testcase Report
+
+| ID | Test Case Description | Test Case Procedure | Expected Output | Test date | Result | Note |
+| --- | --- | --- | --- | --- | --- | --- |
+| TC01 | Kiểm tra đăng nhập thành công và chuyển hướng về Dashboard. | Mở trang login, nhập Administrator/admin và nhấn Đăng nhập. | URL chuyển hướng về trang /app hoặc /desk và không còn ở trang login. | 2026-04-07 | Passed | Testcase cơ bản nhất để xác nhận hệ thống đang chạy. |
+| TC26 | Admin tạo người dùng mới và kiểm tra email chào mừng. | Sử dụng backend script để tạo User và kiểm tra Email Queue. | Email chào mừng được tạo thành công trong hàng chờ (Email Queue). | 2026-04-07 | Passed | Xác nhận tính năng tạo người dùng và hệ thống email hoạt động. |

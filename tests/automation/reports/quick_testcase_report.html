@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>Quick Suite Testcase Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #1f2937; }
+    h1 { margin-bottom: 16px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #cbd5e1; padding: 10px; vertical-align: top; text-align: left; }
+    th { background: #0b3b73; color: white; }
+    tr:nth-child(even) { background: #f8fafc; }
+  </style>
+</head>
+<body>
+  <h1>Quick Suite Testcase Report</h1>
+  <table>
+    <thead><tr><th>ID</th><th>Test Case Description</th><th>Test Case Procedure</th><th>Expected Output</th><th>Test date</th><th>Result</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>TC01</td><td>Kiểm tra đăng nhập thành công và chuyển hướng về Dashboard.</td><td>Mở trang login, nhập Administrator/admin và nhấn Đăng nhập.</td><td>URL chuyển hướng về trang /app hoặc /desk và không còn ở trang login.</td><td>2026-04-07</td><td>Passed</td><td>Testcase cơ bản nhất để xác nhận hệ thống đang chạy.</td></tr><tr><td>TC26</td><td>Admin tạo người dùng mới và kiểm tra email chào mừng.</td><td>Sử dụng backend script để tạo User và kiểm tra Email Queue.</td><td>Email chào mừng được tạo thành công trong hàng chờ (Email Queue).</td><td>2026-04-07</td><td>Passed</td><td>Xác nhận tính năng tạo người dùng và hệ thống email hoạt động.</td></tr>
+    </tbody>
+  </table>
+</body>
+</html>

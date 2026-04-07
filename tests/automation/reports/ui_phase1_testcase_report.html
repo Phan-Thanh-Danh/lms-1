@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>UI Phase 1 Testcase Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #1f2937; }
+    h1 { margin-bottom: 16px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #cbd5e1; padding: 10px; vertical-align: top; text-align: left; }
+    th { background: #0b3b73; color: white; }
+    tr:nth-child(even) { background: #f8fafc; }
+  </style>
+</head>
+<body>
+  <h1>UI Phase 1 Testcase Report</h1>
+  <table>
+    <thead><tr><th>ID</th><th>Test Case Description</th><th>Test Case Procedure</th><th>Expected Output</th><th>Test date</th><th>Result</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>UI01</td><td>Trang đăng nhập hiển thị đầy đủ các điều khiển cơ bản.</td><td>Mở http://lms.localhost:8000/login. Kiểm tra ô Email, ô Password và nút Login xuất hiện.</td><td>Trang login tải thành công và người dùng nhìn thấy đủ 3 thành phần chính để đăng nhập.</td><td>2026-04-07</td><td>Passed</td><td>Smoke test nền tảng cho toàn bộ phase 1. Không phụ thuộc dữ liệu nghiệp vụ.</td></tr><tr><td>UI02</td><td>Admin đăng nhập vào LMS và thấy thanh điều hướng chính.</td><td>Đăng nhập bằng tài khoản Administrator/admin rồi mở LMS dashboard.</td><td>Sidebar hiển thị các mục Home, Search, Notifications, Courses, Programs, Batches và Statistics.</td><td>2026-04-07</td><td>Passed</td><td>Xác nhận session đăng nhập và layout chính của LMS hoạt động bình thường.</td></tr><tr><td>UI03</td><td>Từ sidebar có thể mở trang Courses.</td><td>Đăng nhập admin, nhấn menu Courses trên sidebar.</td><td>URL chuyển sang /lms/courses và nội dung trang Courses hiển thị.</td><td>2026-04-07</td><td>Passed</td><td>Flow điều hướng cơ bản, độc lập với dữ liệu khóa học thực tế.</td></tr><tr><td>UI04</td><td>Từ sidebar có thể mở trang Programs và thấy empty state hiện tại.</td><td>Đăng nhập admin, nhấn menu Programs trên sidebar.</td><td>URL chuyển sang /lms/programs, nút New hiển thị và trang hiển thị danh sách program hoặc trạng thái &#x27;No programs&#x27;.</td><td>2026-04-07</td><td>Passed</td><td>Xác nhận điều hướng và hiển thị header module Program thành công.</td></tr><tr><td>UI05</td><td>Từ sidebar có thể mở trang Batches.</td><td>Đăng nhập admin, nhấn menu Batches trên sidebar.</td><td>URL chuyển sang /lms/batches và tiêu đề All Batches hiển thị.</td><td>2026-04-07</td><td>Passed</td><td>Flow điều hướng cơ bản cho module Batch, chưa kiểm thử dữ liệu batch chi tiết ở phase 1.</td></tr><tr><td>UI06</td><td>Trang Search nhận từ khóa nhập và hiển thị gợi ý thao tác tìm kiếm.</td><td>Đăng nhập admin, mở trang Search, nhập một chuỗi truy vấn duy nhất vào ô tìm kiếm.</td><td>Ô tìm kiếm giữ đúng giá trị vừa nhập và giao diện hiển thị nhắc người dùng &#x27;Press enter to search&#x27;.</td><td>2026-04-07</td><td>Passed</td><td>Do event Enter của TextInput hiện tại không ổn định dưới automation, phase 1 chỉ chốt UI input + trạng thái hướng dẫn; search result sẽ xử lý sâu hơn ở phase 2.</td></tr><tr><td>UI07</td><td>Từ sidebar có thể mở trang Notifications.</td><td>Đăng nhập admin, nhấn menu Notifications trên sidebar.</td><td>Trang Notifications hiển thị hai tab Unread và Read.</td><td>2026-04-07</td><td>Passed</td><td>Flow này chỉ kiểm tra bố cục và tab điều hướng, chưa tạo notification data riêng.</td></tr><tr><td>UI08</td><td>Từ sidebar có thể mở trang Statistics.</td><td>Đăng nhập admin, nhấn menu Statistics trên sidebar.</td><td>Trang Statistics hiển thị được các card chính như Signups và Enrollments.</td><td>2026-04-07</td><td>Passed</td><td>Kiểm tra render dashboard thống kê ở mức UI, chưa đối chiếu số liệu nghiệp vụ.</td></tr><tr><td>UI09</td><td>Người dùng có thể đổi giao diện Light/Dark từ user menu.</td><td>Đăng nhập admin, mở user menu và chọn Toggle Theme.</td><td>Thuộc tính data-theme của trang đổi từ light sang dark.</td><td>2026-04-07</td><td>Passed</td><td>Flow cấu hình cá nhân đơn giản, phù hợp chạy song song vì không phụ thuộc dữ liệu hệ thống.</td></tr><tr><td>UI10</td><td>Người dùng có thể đăng xuất từ user menu.</td><td>Đăng nhập admin, mở user menu và chọn Log out.</td><td>Cookie user_id đổi thành Guest và giao diện quay về trạng thái public/guest.</td><td>2026-04-07</td><td>Passed</td><td>LMS hiện bật guest access, nên sau logout có thể về trang public như /lms/courses thay vì bắt buộc về /login.</td></tr>
+    </tbody>
+  </table>
+</body>
+</html>

@@ -39,22 +39,38 @@
     }
 
     html, body {
-      width: 297mm;
-      height: 210mm;
-      overflow: hidden;
+      width: 210mm;
+      height: 297mm;
+      margin: 0;
+      padding: 0;
       background: #fff;
+      overflow: hidden;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
+    }
+    
+    /* Outer page wrapper to center the certificate */
+    .page-wrapper {
+      width: 210mm;
+      height: 297mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
     }
 
     /* ─── Certificate Wrapper ───────────────────────────────────────── */
     .certificate-wrapper {
       position: relative;
-      width: 297mm;
-      height: 210mm;
+      width: 210mm;
+      height: 148.5mm; /* Scaled from 297x210 */
       background: linear-gradient(135deg, #fdf8f0 0%, #fff9f2 40%, #fef7ec 70%, #fdf3e9 100%);
       overflow: hidden;
       font-family: 'Inter', sans-serif;
+      /* Adjust all children via zoom if needed, but better to use relative coordinates */
+      zoom: 0.707; 
+      width: 297mm; /* Internal width remains 297mm but zoomed down */
+      height: 210mm; /* Internal height remains 210mm but zoomed down */
     }
 
     /* ─── Background Decorative Elements ───────────────────────────── */
@@ -431,6 +447,7 @@
   </style>
 </head>
 <body>
+<div class="page-wrapper">
 <div class="certificate-wrapper">
 
   <!-- Background glow circles -->
@@ -586,5 +603,6 @@
   {% endif %}
 
 </div><!-- /.certificate-wrapper -->
+</div><!-- /.page-wrapper -->
 </body>
 </html>

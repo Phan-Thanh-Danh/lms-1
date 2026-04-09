@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preview — Chứng Chỉ Hoàn Thành | Frappe LMS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 32px 20px 50px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── Preview UI bar ── */
+    .preview-bar {
+      width: 100%; max-width: 1100px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .preview-bar-left { display: flex; flex-direction: column; gap: 4px; }
+    .preview-bar-left h1 {
+      color: #c9a227;
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; letter-spacing: 1px;
+    }
+    .preview-bar-left span {
+      color: rgba(255,255,255,0.4);
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    }
+    .btn-print {
+      background: linear-gradient(135deg, #c9a227, #e8c86a);
+      color: #1a1200; border: none;
+      padding: 11px 28px; border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; font-weight: 700;
+      cursor: pointer; letter-spacing: 0.5px;
+      transition: all 0.2s; box-shadow: 0 4px 20px rgba(201,162,39,0.4);
+    }
+    .btn-print:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(201,162,39,0.55); }
+
+    .cert-shadow {
+      box-shadow: 0 40px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(201,162,39,0.25);
+      border-radius: 2px;
+    }
+
+    /* ══════════════ CERTIFICATE ══════════════ */
+    .certificate-wrapper {
+      position: relative;
+      width: 1060px; height: 750px;
+      background: linear-gradient(138deg, #fdf8f0 0%, #fffaf3 35%, #fef7ec 65%, #fdf3e7 100%);
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Background decorative circles */
+    .bg-c { position: absolute; border-radius: 50%; pointer-events: none; }
+    .bg-c1 { width: 400px; height: 400px; top: -120px; left: -120px;
+      background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 68%); }
+    .bg-c2 { width: 350px; height: 350px; bottom: -90px; right: -90px;
+      background: radial-gradient(circle, rgba(160,120,32,0.08) 0%, transparent 68%); }
+    .bg-c3 { width: 260px; height: 260px; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      background: radial-gradient(circle, rgba(212,175,55,0.05) 0%, transparent 68%); }
+    .bg-c4 { width: 150px; height: 150px; top: 15%; right: 25%;
+      background: radial-gradient(circle, rgba(212,175,55,0.04) 0%, transparent 68%); }
+
+    /* Side accent bars */
+    .side-l, .side-r {
+      position: absolute; top: 0; width: 20px; height: 100%; z-index: 5;
+    }
+    .side-l { left: 0; background: linear-gradient(180deg, #c9a227 0%, #f5e07c 28%, #c9a227 55%, #9b7518 100%); }
+    .side-r { right: 0; background: linear-gradient(180deg, #9b7518 0%, #c9a227 38%, #f5e07c 65%, #c9a227 100%); }
+
+    /* Borders */
+    .bord-out {
+      position: absolute; top: 26px; left: 26px; right: 26px; bottom: 26px;
+      border: 2.5px solid #c9a227; pointer-events: none; z-index: 3;
+    }
+    .bord-in {
+      position: absolute; top: 36px; left: 36px; right: 36px; bottom: 36px;
+      border: 0.8px solid rgba(201,162,39,0.42); pointer-events: none; z-index: 3;
+    }
+
+    /* Corner ornaments */
+    .corn { position: absolute; width: 115px; height: 115px; pointer-events: none; z-index: 4; }
+    .corn.tl { top: 34px; left: 44px; }
+    .corn.tr { top: 34px; right: 44px; transform: scaleX(-1); }
+    .corn.bl { bottom: 34px; left: 44px; transform: scaleY(-1); }
+    .corn.br { bottom: 34px; right: 44px; transform: scale(-1,-1); }
+
+    /* Gold divider */
+    .div-g {
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px; margin: 0 auto; width: 60%;
+    }
+    .div-g .line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, #c9a227, transparent); }
+    .div-g .diam { width: 7px; height: 7px; background: #c9a227; transform: rotate(45deg); flex-shrink: 0; }
+
+    /* Main content */
+    .cert-body {
+      position: relative; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 100%; height: 100%;
+      padding: 52px 90px 44px 90px; text-align: center;
+    }
+
+    /* Header */
+    .cert-hdr {
+      display: flex; align-items: center; justify-content: center;
+      gap: 15px; margin-bottom: 14px;
+    }
+    .logo-wrap {
+      width: 50px; height: 50px; border-radius: 50%;
+      background: linear-gradient(138deg, #c9a227 0%, #edd87a 50%, #9b7215 100%);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 3px 18px rgba(201,162,39,0.45); flex-shrink: 0;
+    }
+    .logo-wrap svg { width: 26px; height: 26px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    .org-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px; font-weight: 600; color: #4a3200;
+      letter-spacing: 4.5px; text-transform: uppercase;
+    }
+
+    /* Pre-title */
+    .badge {
+      display: inline-block;
+      background: linear-gradient(90deg, #b8901e, #d4aa35, #e8cc67, #d4aa35, #b8901e);
+      color: #fff; font-size: 8.5px; font-weight: 700;
+      letter-spacing: 4px; text-transform: uppercase;
+      padding: 5px 24px; border-radius: 50px; margin-bottom: 13px;
+    }
+
+    /* Title */
+    .title-main {
+      font-family: 'Playfair Display', serif;
+      font-size: 54px; font-weight: 700; color: #231206;
+      line-height: 1.0; letter-spacing: -0.5px; margin-bottom: 5px;
+    }
+    .title-sub {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-weight: 400;
+      color: #8b5a2b; font-size: 17px;
+      letter-spacing: 1px; margin-bottom: 16px;
+    }
+
+    /* Awarded to */
+    .awarded-lbl {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11.5px; color: #7a6040;
+      letter-spacing: 4px; text-transform: uppercase;
+      margin-top: 13px; margin-bottom: 3px;
+    }
+    .name-recipient {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px; font-weight: 700; font-style: italic;
+      color: #c9a227; line-height: 1.1;
+      text-shadow: 1px 3px 12px rgba(201,162,39,0.22);
+      margin-bottom: 10px;
+    }
+
+    /* Description */
+    .cert-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15.5px; color: #5a3f1a;
+      line-height: 1.65; max-width: 580px; margin: 0 auto 12px;
+    }
+    .cert-desc strong {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600; color: #2c1600;
+    }
+
+    /* Footer */
+    .cert-ftr {
+      display: flex; align-items: flex-end;
+      justify-content: space-between;
+      width: 100%; margin-top: 16px; gap: 10px;
+    }
+
+    .sig-block {
+      display: flex; flex-direction: column;
+      align-items: center; min-width: 148px;
+    }
+    .sig-cursive {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 22px;
+      color: #8b6020; height: 30px;
+      display: flex; align-items: flex-end; margin-bottom: 3px;
+    }
+    .sig-line {
+      width: 135px; height: 1px;
+      background: linear-gradient(90deg, transparent, #8b6020, transparent);
+      margin-bottom: 7px;
+    }
+    .sig-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 12px; font-weight: 600; color: #3d2800;
+      text-align: center;
+    }
+    .sig-role {
+      font-size: 8.5px; color: #9a7840;
+      letter-spacing: 1.5px; text-transform: uppercase; margin-top: 3px;
+    }
+
+    .cert-mid { text-align: center; flex: 1; }
+    .cert-mid .lbl { font-size: 7.5px; color: #bbb; letter-spacing: 2.5px; text-transform: uppercase; }
+    .cert-mid .val { font-size: 9px; color: #7a6040; letter-spacing: 1px; margin-top: 2px; }
+    .cert-mid .dt {
+      margin-top: 7px; font-family: 'Cormorant Garamond', serif;
+      font-size: 12.5px; color: #6a5030;
+    }
+
+    .seal-wrap { display: flex; flex-direction: column; align-items: center; min-width: 100px; }
+    .seal-svg {
+      width: 88px; height: 88px;
+      filter: drop-shadow(0 3px 12px rgba(201,162,39,0.4));
+    }
+
+    @media print {
+      body { background: none !important; padding: 0; }
+      .preview-bar { display: none; }
+      .cert-shadow { box-shadow: none; }
+      .certificate-wrapper { width: 297mm; height: 210mm; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Preview UI -->
+<div class="preview-bar">
+  <div class="preview-bar-left">
+    <h1>✦ Mẫu Chứng Chỉ Frappe LMS</h1>
+    <span>Print Format — A4 Landscape · Demo Data</span>
+  </div>
+  <button class="btn-print" onclick="window.print()">🖨&nbsp; In / Xuất PDF</button>
+</div>
+
+<!-- Certificate -->
+<div class="cert-shadow">
+<div class="certificate-wrapper">
+
+  <!-- BG circles -->
+  <div class="bg-c bg-c1"></div>
+  <div class="bg-c bg-c2"></div>
+  <div class="bg-c bg-c3"></div>
+  <div class="bg-c bg-c4"></div>
+
+  <!-- Side bars -->
+  <div class="side-l"></div>
+  <div class="side-r"></div>
+
+  <!-- Border frames -->
+  <div class="bord-out"></div>
+  <div class="bord-in"></div>
+
+  <!-- Corner ornaments (SVG) -->
+  <svg class="corn tl" viewBox="0 0 100 100" fill="none">
+    <path d="M8 8 L8 52 M8 8 L52 8" stroke="#c9a227" stroke-width="2.8" stroke-linecap="round"/>
+    <path d="M8 8 Q32 8 32 32" stroke="#c9a227" stroke-width="1.2" stroke-dasharray="3,3.5"/>
+    <circle cx="8" cy="8" r="4" fill="#c9a227"/>
+    <circle cx="8" cy="52" r="2" fill="#c9a227" opacity="0.5"/>
+    <circle cx="52" cy="8" r="2" fill="#c9a227" opacity="0.5"/>
+    <path d="M20 20 L20 60 M20 20 L60 20" stroke="#e8c86a" stroke-width="0.9" opacity="0.5"/>
+    <circle cx="20" cy="20" r="2" fill="#e8c86a"/>
+    <path d="M14 36 Q22 28 36 14" stroke="#c9a227" stroke-width="0.5" opacity="0.3"/>
+  </svg>
+  <svg class="corn tr" viewBox="0 0 100 100" fill="none">
+    <path d="M8 8 L8 52 M8 8 L52 8" stroke="#c9a227" stroke-width="2.8" stroke-linecap="round"/>
+    <path d="M8 8 Q32 8 32 32" stroke="#c9a227" stroke-width="1.2" stroke-dasharray="3,3.5"/>
+    <circle cx="8" cy="8" r="4" fill="#c9a227"/>
+    <circle cx="8" cy="52" r="2" fill="#c9a227" opacity="0.5"/>
+    <circle cx="52" cy="8" r="2" fill="#c9a227" opacity="0.5"/>
+    <path d="M20 20 L20 60 M20 20 L60 20" stroke="#e8c86a" stroke-width="0.9" opacity="0.5"/>
+    <circle cx="20" cy="20" r="2" fill="#e8c86a"/>
+  </svg>
+  <svg class="corn bl" viewBox="0 0 100 100" fill="none">
+    <path d="M8 8 L8 52 M8 8 L52 8" stroke="#c9a227" stroke-width="2.8" stroke-linecap="round"/>
+    <path d="M8 8 Q32 8 32 32" stroke="#c9a227" stroke-width="1.2" stroke-dasharray="3,3.5"/>
+    <circle cx="8" cy="8" r="4" fill="#c9a227"/>
+    <circle cx="8" cy="52" r="2" fill="#c9a227" opacity="0.5"/>
+    <circle cx="52" cy="8" r="2" fill="#c9a227" opacity="0.5"/>
+    <path d="M20 20 L20 60 M20 20 L60 20" stroke="#e8c86a" stroke-width="0.9" opacity="0.5"/>
+    <circle cx="20" cy="20" r="2" fill="#e8c86a"/>
+  </svg>
+  <svg class="corn br" viewBox="0 0 100 100" fill="none">
+    <path d="M8 8 L8 52 M8 8 L52 8" stroke="#c9a227" stroke-width="2.8" stroke-linecap="round"/>
+    <path d="M8 8 Q32 8 32 32" stroke="#c9a227" stroke-width="1.2" stroke-dasharray="3,3.5"/>
+    <circle cx="8" cy="8" r="4" fill="#c9a227"/>
+    <circle cx="8" cy="52" r="2" fill="#c9a227" opacity="0.5"/>
+    <circle cx="52" cy="8" r="2" fill="#c9a227" opacity="0.5"/>
+    <path d="M20 20 L20 60 M20 20 L60 20" stroke="#e8c86a" stroke-width="0.9" opacity="0.5"/>
+    <circle cx="20" cy="20" r="2" fill="#e8c86a"/>
+  </svg>
+
+  <!-- MAIN CONTENT -->
+  <div class="cert-body">
+
+    <!-- Logo + Org -->
+    <div class="cert-hdr">
+      <div class="logo-wrap">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="org-name">Frappe LMS Academy</div>
+    </div>
+
+    <!-- Badge -->
+    <span class="badge">✦ &nbsp; Certificate of Completion &nbsp; ✦</span>
+
+    <!-- Main title -->
+    <div class="title-main">Chứng Chỉ</div>
+    <div class="title-sub">Hoàn thành khóa học xuất sắc</div>
+
+    <!-- Gold divider -->
+    <div class="div-g">
+      <div class="line"></div>
+      <div class="diam" style="width:4px;height:4px;opacity:0.6;"></div>
+      <div class="diam"></div>
+      <div class="diam" style="width:4px;height:4px;opacity:0.6;"></div>
+      <div class="line"></div>
+    </div>
+
+    <!-- Recipient -->
+    <div class="awarded-lbl">Trân trọng trao tặng cho</div>
+    <!-- DEMO: {{ doc.member_name }} -->
+    <div class="name-recipient">Nguyễn Thị Hương Giang</div>
+
+    <!-- Description -->
+    <div class="cert-desc">
+      Đã hoàn thành xuất sắc và đáp ứng toàn bộ yêu cầu của khóa học<br/>
+      <!-- DEMO: {{ doc.course_title or doc.course }} -->
+      <strong>Marketing Digital</strong>
+    </div>
+
+    <!-- Divider 2 -->
+    <div class="div-g" style="margin-top:12px;">
+      <div class="line"></div>
+      <div class="diam"></div>
+      <div class="line"></div>
+    </div>
+
+    <!-- Footer -->
+    <div class="cert-ftr">
+
+      <!-- Evaluator signature -->
+      <div class="sig-block">
+        <!-- DEMO: {{ doc.evaluator_name }} -->
+        <div class="sig-cursive">TS. Trần Văn Minh</div>
+        <div class="sig-line"></div>
+        <div class="sig-name">TS. Trần Văn Minh</div>
+        <div class="sig-role">Giảng Viên / Người Đánh Giá</div>
+      </div>
+
+      <!-- Center: ID + date -->
+      <div class="cert-mid">
+        <div class="lbl">Mã chứng chỉ</div>
+        <!-- DEMO: {{ doc.name }} -->
+        <div class="val">CERT-2026-A8F3D9</div>
+        <div class="dt">
+          <!-- DEMO: {{ doc.issue_date }} -->
+          Ngày cấp: <strong>09/04/2026</strong>
+        </div>
+      </div>
+
+      <!-- Seal -->
+      <div class="seal-wrap">
+        <svg class="seal-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="sg" cx="50%" cy="38%" r="62%">
+              <stop offset="0%" stop-color="#f0da82"/>
+              <stop offset="48%" stop-color="#c9a227"/>
+              <stop offset="100%" stop-color="#7a4e0a"/>
+            </radialGradient>
+          </defs>
+          <!-- Outer dashed ring -->
+          <circle cx="60" cy="60" r="57" fill="none" stroke="#c9a227" stroke-width="1.2" stroke-dasharray="4,2.5"/>
+          <!-- Second ring -->
+          <circle cx="60" cy="60" r="51" fill="none" stroke="#e8c86a" stroke-width="0.7"/>
+          <!-- Filled circle -->
+          <circle cx="60" cy="60" r="46" fill="url(#sg)"/>
+          <!-- Star -->
+          <path d="M60 28 L64 50H86L70 63L75.5 85L60 72L44.5 85L50 63L34 50H56Z"
+                fill="#fff" opacity="0.93"/>
+          <!-- Top arc text -->
+          <path id="ta" d="M23 60 A37 37 0 0 1 97 60" fill="none"/>
+          <text font-family="Arial,sans-serif" font-size="8" font-weight="700"
+                fill="#fff" letter-spacing="1" text-anchor="middle">
+            <textPath href="#ta" startOffset="50%">✦ CHỨNG CHỈ CHÍNH THỨC ✦</textPath>
+          </text>
+          <!-- Bottom arc text -->
+          <path id="ba" d="M23 60 A37 37 0 0 0 97 60" fill="none"/>
+          <text font-family="Arial,sans-serif" font-size="7"
+                fill="#fff" letter-spacing="1" text-anchor="middle">
+            <textPath href="#ba" startOffset="50%">FRAPPE LMS ACADEMY</textPath>
+          </text>
+        </svg>
+      </div>
+
+    </div><!-- /.cert-ftr -->
+  </div><!-- /.cert-body -->
+
+</div><!-- /.certificate-wrapper -->
+</div><!-- /.cert-shadow -->
+
+</body>
+</html>

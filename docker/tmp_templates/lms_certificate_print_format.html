@@ -1,0 +1,557 @@
+<!-- 
+  ╔══════════════════════════════════════════════════════════════════════════════╗
+  ║        FRAPPE LMS — PRINT FORMAT: LMS Certificate (Premium Edition)         ║
+  ║  Hướng dẫn cài đặt:                                                         ║
+  ║  1. Vào Frappe Admin > Print Format > New                                    ║
+  ║  2. Doc Type: LMS Certificate                                                ║
+  ║  3. Module: LMS                                                              ║
+  ║  4. Bật "Custom Format" và dán toàn bộ nội dung HTML này vào                ║
+  ║  5. Lưu và đặt làm Default Print Format cho LMS Certificate                 ║
+  ╚══════════════════════════════════════════════════════════════════════════════╝
+  
+  Các biến Jinja2 có sẵn (Frappe Print Format context):
+    doc.member_name   — Tên học viên (fetch từ User.full_name)
+    doc.course_title  — Tên khóa học (fetch từ LMS Course.title)
+    doc.course        — ID khóa học
+    doc.issue_date    — Ngày cấp chứng chỉ
+    doc.expiry_date   — Ngày hết hạn (nếu có)
+    doc.evaluator_name — Tên người đánh giá (giảng viên ký)
+    doc.batch_title   — Tên lớp học (nếu có)
+    doc.name          — Mã chứng chỉ (hash duy nhất)
+-->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chứng Chỉ Hoàn Thành — {{ doc.course_title or doc.course }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Reset & A4 Page Setup ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @page {
+      size: A4 landscape;
+      margin: 0;
+    }
+
+    html, body {
+      width: 297mm;
+      height: 210mm;
+      overflow: hidden;
+      background: #fff;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* ─── Certificate Wrapper ───────────────────────────────────────── */
+    .certificate-wrapper {
+      position: relative;
+      width: 297mm;
+      height: 210mm;
+      background: linear-gradient(135deg, #fdf8f0 0%, #fff9f2 40%, #fef7ec 70%, #fdf3e9 100%);
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ─── Background Decorative Elements ───────────────────────────── */
+    .bg-circle-1 {
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
+      top: -80px;
+      left: -80px;
+      pointer-events: none;
+    }
+    .bg-circle-2 {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139, 90, 43, 0.06) 0%, transparent 70%);
+      bottom: -60px;
+      right: -60px;
+      pointer-events: none;
+    }
+    .bg-circle-3 {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    /* ─── Ornamental Corner SVG Pattern ────────────────────────────── */
+    .corner-ornament {
+      position: absolute;
+      width: 110px;
+      height: 110px;
+      pointer-events: none;
+    }
+    .corner-ornament.top-left    { top: 18mm; left: 18mm; }
+    .corner-ornament.top-right   { top: 18mm; right: 18mm; transform: scaleX(-1); }
+    .corner-ornament.bottom-left { bottom: 18mm; left: 18mm; transform: scaleY(-1); }
+    .corner-ornament.bottom-right{ bottom: 18mm; right: 18mm; transform: scale(-1,-1); }
+
+    /* ─── Outer Gold Border ─────────────────────────────────────────── */
+    .border-outer {
+      position: absolute;
+      top: 10mm;
+      left: 10mm;
+      right: 10mm;
+      bottom: 10mm;
+      border: 2.5px solid #c9a227;
+      pointer-events: none;
+    }
+    .border-inner {
+      position: absolute;
+      top: 13mm;
+      left: 13mm;
+      right: 13mm;
+      bottom: 13mm;
+      border: 0.8px solid rgba(201, 162, 39, 0.45);
+      pointer-events: none;
+    }
+
+    /* ─── Gold Line Dividers ────────────────────────────────────────── */
+    .divider-gold {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 0 auto;
+      width: 70%;
+    }
+    .divider-gold .line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #c9a227, transparent);
+    }
+    .divider-gold .diamond {
+      width: 7px;
+      height: 7px;
+      background: #c9a227;
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    /* ─── Main Content Layout ───────────────────────────────────────── */
+    .certificate-content {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      padding: 22mm 28mm 18mm 28mm;
+      text-align: center;
+    }
+
+    /* ─── Logo / Header Area ────────────────────────────────────────── */
+    .cert-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 4mm;
+    }
+    .logo-placeholder {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #c9a227 0%, #e8c86a 50%, #a07820 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 12px rgba(201, 162, 39, 0.35);
+      flex-shrink: 0;
+    }
+    .logo-placeholder svg {
+      width: 26px;
+      height: 26px;
+      fill: #fff;
+    }
+    .org-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #4a3200;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    /* ─── Pre-title badge ───────────────────────────────────────────── */
+    .pretitle-badge {
+      display: inline-block;
+      background: linear-gradient(90deg, #c9a227, #e8c86a, #c9a227);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      padding: 4px 18px;
+      border-radius: 50px;
+      margin-bottom: 4mm;
+    }
+
+    /* ─── Main Title ────────────────────────────────────────────────── */
+    .cert-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: #2c1810;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+      margin-bottom: 2mm;
+    }
+    .cert-title-italic {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 400;
+      color: #8b5a2b;
+      font-size: 16px;
+      letter-spacing: 1px;
+      margin-bottom: 5mm;
+    }
+
+    /* ─── Recipient Section ─────────────────────────────────────────── */
+    .awarded-to-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      color: #7a6040;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-top: 4mm;
+      margin-bottom: 1mm;
+    }
+    .recipient-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 34px;
+      font-weight: 700;
+      font-style: italic;
+      color: #c9a227;
+      line-height: 1.15;
+      text-shadow: 1px 2px 8px rgba(201, 162, 39, 0.18);
+      margin-bottom: 3mm;
+    }
+
+    /* ─── Description Text ──────────────────────────────────────────── */
+    .cert-description {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13.5px;
+      color: #5a4020;
+      line-height: 1.6;
+      max-width: 480px;
+      margin: 0 auto 3mm auto;
+    }
+    .cert-description strong {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      color: #3d2800;
+    }
+
+    /* ─── Footer: Signatures + Seal ────────────────────────────────── */
+    .cert-footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 5mm;
+      gap: 10px;
+    }
+
+    /* Signature block (left) */
+    .signature-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 130px;
+    }
+    .signature-line {
+      width: 120px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #8b6020, transparent);
+      margin-bottom: 5px;
+    }
+    .signature-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: #3d2800;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .signature-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 8.5px;
+      color: #9a7840;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    /* Certificate details (center) */
+    .cert-details-center {
+      text-align: center;
+      flex: 1;
+    }
+    .cert-id-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 7.5px;
+      color: #aaa;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .cert-id-value {
+      font-family: 'Inter', sans-serif;
+      font-size: 8.5px;
+      color: #7a6040;
+      letter-spacing: 1px;
+      margin-top: 1px;
+    }
+    .cert-date-row {
+      margin-top: 4px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px;
+      color: #7a6040;
+    }
+
+    /* Seal (right) */
+    .cert-seal {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 90px;
+    }
+    .seal-svg {
+      width: 72px;
+      height: 72px;
+      filter: drop-shadow(0 2px 8px rgba(201, 162, 39, 0.3));
+    }
+
+    /* ─── Accent side bar (left) ────────────────────────────────────── */
+    .side-accent {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 6mm;
+      height: 100%;
+      background: linear-gradient(180deg, #c9a227 0%, #f0d878 30%, #c9a227 60%, #a07820 100%);
+      z-index: 5;
+    }
+    .side-accent-right {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 6mm;
+      height: 100%;
+      background: linear-gradient(180deg, #a07820 0%, #c9a227 40%, #f0d878 70%, #c9a227 100%);
+      z-index: 5;
+    }
+
+    /* ─── Score badge ───────────────────────────────────────────────── */
+    .score-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: linear-gradient(135deg, #2c1810, #4a2c10);
+      color: #f0d878;
+      border-radius: 4px;
+      padding: 3px 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 2mm;
+    }
+    .score-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #f0d878;
+    }
+
+    @media print {
+      html, body { width: 297mm; height: 210mm; }
+      .certificate-wrapper { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<div class="certificate-wrapper">
+
+  <!-- Background glow circles -->
+  <div class="bg-circle-1"></div>
+  <div class="bg-circle-2"></div>
+  <div class="bg-circle-3"></div>
+
+  <!-- Side accent bars -->
+  <div class="side-accent"></div>
+  <div class="side-accent-right"></div>
+
+  <!-- Border frames -->
+  <div class="border-outer"></div>
+  <div class="border-inner"></div>
+
+  <!-- Corner ornaments (SVG vector) -->
+  <svg class="corner-ornament top-left" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 10 L10 40 M10 10 L40 10" stroke="#c9a227" stroke-width="2" stroke-linecap="round"/>
+    <path d="M10 10 Q30 10 30 30" stroke="#c9a227" stroke-width="1" stroke-dasharray="2,3"/>
+    <circle cx="10" cy="10" r="3" fill="#c9a227"/>
+    <path d="M20 20 L20 55 M20 20 L55 20" stroke="#e8c86a" stroke-width="0.8" opacity="0.6"/>
+    <circle cx="20" cy="20" r="1.5" fill="#e8c86a"/>
+    <path d="M15 35 Q22 28 35 15" stroke="#c9a227" stroke-width="0.5" opacity="0.4"/>
+  </svg>
+  <svg class="corner-ornament top-right" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 10 L10 40 M10 10 L40 10" stroke="#c9a227" stroke-width="2" stroke-linecap="round"/>
+    <path d="M10 10 Q30 10 30 30" stroke="#c9a227" stroke-width="1" stroke-dasharray="2,3"/>
+    <circle cx="10" cy="10" r="3" fill="#c9a227"/>
+    <path d="M20 20 L20 55 M20 20 L55 20" stroke="#e8c86a" stroke-width="0.8" opacity="0.6"/>
+    <circle cx="20" cy="20" r="1.5" fill="#e8c86a"/>
+  </svg>
+  <svg class="corner-ornament bottom-left" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 10 L10 40 M10 10 L40 10" stroke="#c9a227" stroke-width="2" stroke-linecap="round"/>
+    <path d="M10 10 Q30 10 30 30" stroke="#c9a227" stroke-width="1" stroke-dasharray="2,3"/>
+    <circle cx="10" cy="10" r="3" fill="#c9a227"/>
+    <path d="M20 20 L20 55 M20 20 L55 20" stroke="#e8c86a" stroke-width="0.8" opacity="0.6"/>
+    <circle cx="20" cy="20" r="1.5" fill="#e8c86a"/>
+  </svg>
+  <svg class="corner-ornament bottom-right" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 10 L10 40 M10 10 L40 10" stroke="#c9a227" stroke-width="2" stroke-linecap="round"/>
+    <path d="M10 10 Q30 10 30 30" stroke="#c9a227" stroke-width="1" stroke-dasharray="2,3"/>
+    <circle cx="10" cy="10" r="3" fill="#c9a227"/>
+    <path d="M20 20 L20 55 M20 20 L55 20" stroke="#e8c86a" stroke-width="0.8" opacity="0.6"/>
+    <circle cx="20" cy="20" r="1.5" fill="#e8c86a"/>
+  </svg>
+
+  <!-- ── MAIN CONTENT ──────────────────────────────────────────────── -->
+  <div class="certificate-content">
+
+    <!-- Logo + Org Name -->
+    <div class="cert-header">
+      <div class="logo-placeholder">
+        <!-- Replace with your actual logo SVG or <img> tag -->
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div class="org-name">Frappe LMS Academy</div>
+    </div>
+
+    <!-- Pre-title badge -->
+    <span class="pretitle-badge">Certificate of Completion</span>
+
+    <!-- Main Title -->
+    <div class="cert-title">Chứng Chỉ</div>
+    <div class="cert-title-italic">Hoàn thành khóa học xuất sắc</div>
+
+    <!-- Gold divider -->
+    <div class="divider-gold">
+      <div class="line"></div>
+      <div class="diamond"></div>
+      <div class="line"></div>
+    </div>
+
+    <!-- Awarded to -->
+    <div class="awarded-to-text">Trân trọng trao tặng cho</div>
+    <div class="recipient-name">{{ doc.member_name }}</div>
+
+    <!-- Description -->
+    <div class="cert-description">
+      Đã hoàn thành xuất sắc và đáp ứng toàn bộ yêu cầu của khóa học<br/>
+      <strong>{{ doc.course_title or doc.course }}</strong>
+      {% if doc.batch_title %}
+        &nbsp;— Lớp học: <strong>{{ doc.batch_title }}</strong>
+      {% endif %}
+    </div>
+
+    <!-- Score badge (optional) -->
+    {# Nếu bạn thêm trường score vào DocType, bỏ comment dòng dưới #}
+    {# <div class="score-badge">Điểm đạt được &nbsp; <span class="score-value">{{ doc.score }}</span> / 100</div> #}
+
+    <!-- Gold divider -->
+    <div class="divider-gold" style="margin-top: 3mm;">
+      <div class="line"></div>
+      <div class="diamond"></div>
+      <div class="line"></div>
+    </div>
+
+    <!-- ── Footer ─────────────────────────────────────────────────── -->
+    <div class="cert-footer">
+
+      <!-- Left signature — Evaluator/Instructor -->
+      <div class="signature-block">
+        <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:20px; color:#8b6020; margin-bottom:1px; height:28px; display:flex; align-items:flex-end;">
+          {{ doc.evaluator_name or 'Giảng viên' }}
+        </div>
+        <div class="signature-line"></div>
+        <div class="signature-name">{{ doc.evaluator_name or '________________' }}</div>
+        <div class="signature-title">Giảng Viên / Người Đánh Giá</div>
+      </div>
+
+      <!-- Center — Certificate ID + Date -->
+      <div class="cert-details-center">
+        <div class="cert-id-label">Mã chứng chỉ</div>
+        <div class="cert-id-value">{{ doc.name }}</div>
+        <div class="cert-date-row">
+          <span>Ngày cấp: <strong>{{ frappe.format(doc.issue_date, {'fieldtype': 'Date'}) }}</strong></span>
+          {% if doc.expiry_date %}
+          &nbsp;·&nbsp;
+          <span>Hết hạn: <strong>{{ frappe.format(doc.expiry_date, {'fieldtype': 'Date'}) }}</strong></span>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Right — Official Seal -->
+      <div class="cert-seal">
+        <svg class="seal-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer gear ring -->
+          <circle cx="60" cy="60" r="56" fill="none" stroke="#c9a227" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#e8c86a" stroke-width="0.8"/>
+          <!-- Inner circle fill -->
+          <circle cx="60" cy="60" r="44" fill="url(#sealGrad)" />
+          <!-- Star/checkmark center -->
+          <path d="M60 30 L63.5 50 H84 L68 62 L73.5 82 L60 70 L46.5 82 L52 62 L36 50 H56.5 Z"
+                fill="#fff" opacity="0.92"/>
+          <!-- Text arc top -->
+          <path id="topArc" d="M 20 60 A 40 40 0 0 1 100 60" fill="none"/>
+          <text font-family="'Inter', sans-serif" font-size="8" font-weight="600"
+                fill="#fff" letter-spacing="1.5" text-anchor="middle">
+            <textPath href="#topArc" startOffset="50%">✦ CHỨNG CHỈ CHÍNH THỨC ✦</textPath>
+          </text>
+          <!-- Text arc bottom -->
+          <path id="botArc" d="M 20 60 A 40 40 0 0 0 100 60" fill="none"/>
+          <text font-family="'Inter', sans-serif" font-size="7" fill="#fff"
+                letter-spacing="1" text-anchor="middle">
+            <textPath href="#botArc" startOffset="50%">FRAPPE LMS ACADEMY</textPath>
+          </text>
+          <!-- Gradient def -->
+          <defs>
+            <radialGradient id="sealGrad" cx="50%" cy="40%" r="60%">
+              <stop offset="0%" stop-color="#e8c86a"/>
+              <stop offset="50%" stop-color="#c9a227"/>
+              <stop offset="100%" stop-color="#7a5010"/>
+            </radialGradient>
+          </defs>
+        </svg>
+      </div>
+
+    </div><!-- /.cert-footer -->
+  </div><!-- /.certificate-content -->
+
+</div><!-- /.certificate-wrapper -->
+</body>
+</html>

@@ -9,7 +9,7 @@ def run():
 
     fmt_name = "Cert_Fmt_Hackathon"
 
-    phoi_path = "/home/frappe/frappe-bench/sites/lms.localhost/public/files/phoi.jpg"
+    phoi_path = "/workspace/lms/public/images/phoi.jpg"
     with open(phoi_path, "rb") as f:
         phoi_b64 = base64.b64encode(f.read()).decode('utf-8')
     phoi_data_uri = f"data:image/jpeg;base64,{phoi_b64}"
@@ -119,6 +119,20 @@ def run():
     font-style: italic;
     color: #111;
   }}
+
+  .f-seal {{
+    position: absolute;
+    right: 48mm;
+    top: 172mm;
+    width: 23mm;
+    height: 23mm;
+    opacity: 0.95;
+    transform: rotate(-8deg);
+    mix-blend-mode: multiply;
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.1));
+    z-index: 10;
+    pointer-events: none;
+  }}
 </style>
 </head>
 <body>
@@ -130,6 +144,7 @@ def run():
     <div class="f-score">Điểm: {{{{ doc.score or '100' }}}} / 100</div>
     <div class="f-date">{{{{ frappe.utils.formatdate(doc.issue_date) }}}}</div>
     <div class="f-sig">{{{{ doc.evaluator_name or '' }}}}</div>
+    <img class="f-seal" src="/assets/lms/images/MOCCHUNGCHI.png" alt="Seal"/>
   </div>
 </div>
 </body>

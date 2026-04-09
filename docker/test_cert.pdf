@@ -1,0 +1,71 @@
+Traceback (most recent call last):
+  File "/home/frappe/frappe-bench/apps/frappe/frappe/utils/bench_helper.py", line 48, in invoke
+    return super().invoke(ctx)
+           ~~~~~~~~~~~~~~^^^^^
+  File "/home/frappe/frappe-bench/env/lib/python3.14/site-packages/click/core.py", line 1873, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/home/frappe/frappe-bench/env/lib/python3.14/site-packages/click/core.py", line 1269, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/frappe/frappe-bench/env/lib/python3.14/site-packages/click/core.py", line 824, in invoke
+    return callback(*args, **kwargs)
+  File "/home/frappe/frappe-bench/env/lib/python3.14/site-packages/click/decorators.py", line 34, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File "/home/frappe/frappe-bench/apps/frappe/frappe/commands/__init__.py", line 28, in _func
+    ret = f(ctx.obj, *args, **kwargs)
+  File "/home/frappe/frappe-bench/apps/frappe/frappe/commands/utils.py", line 261, in execute
+    _execute(context, method, args, kwargs, profile, extra_args)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/frappe/frappe-bench/apps/frappe/frappe/commands/execute.py", line 74, in _execute
+    ret = fn(*fn_args, **fn_kwargs)
+  File "/home/frappe/frappe-bench/apps/frappe/frappe/utils/print_utils.py", line 73, in get_print
+    response = get_response_without_exception_handling("printview", 200)
+  File "/home/frappe/frappe-bench/apps/frappe/frappe/website/serve.py", line 54, in get_response_without_exception_handling
+    return renderer_instance.render()
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/frappe/frappe-bench/apps/frappe/frappe/website/page_renderers/template_page.py", line 84, in render
+    html = self.get_html()
+  File "/home/frappe/frappe-bench/apps/frappe/frappe/website/utils.py", line 540, in cache_html_decorator
+    html = func(*args, **kwargs)
+  File "/home/frappe/frappe-bench/apps/frappe/frappe/website/page_renderers/template_page.py", line 95, in get_html
+    self.update_context()
+    ~~~~~~~~~~~~~~~~~~~^^
+  File "/home/frappe/frappe-bench/apps/frappe/frappe/website/page_renderers/template_page.py", line 163, in update_context
+    data = self.run_pymodule_method("get_context")
+  File "/home/frappe/frappe-bench/apps/frappe/frappe/website/page_renderers/template_page.py", line 223, in run_pymodule_method
+    return method(self.context)
+  File "/home/frappe/frappe-bench/apps/frappe/frappe/www/printview.py", line 63, in get_context
+    doc = frappe.get_lazy_doc(frappe.form_dict.doctype, frappe.form_dict.name)
+  File "/home/frappe/frappe-bench/apps/frappe/frappe/model/document.py", line 154, in get_lazy_doc
+    doc = controller(doctype, name, for_update=for_update)
+  File "/home/frappe/frappe-bench/apps/frappe/frappe/model/document.py", line 208, in __init__
+    self.load_from_db()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/frappe/frappe-bench/apps/frappe/frappe/model/document.py", line 276, in load_from_db
+    frappe.throw(
+    ~~~~~~~~~~~~^
+    	_("{0} {1} not found").format(_(self.doctype), self.name),
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    	frappe.DoesNotExistError(doctype=self.doctype),
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/frappe/frappe-bench/apps/frappe/frappe/utils/messages.py", line 159, in throw
+    msgprint(
+    ~~~~~~~~^
+    	msg,
+     ^^^^
+    ...<7 lines>...
+    	allow_dangerous_html=allow_dangerous_html,
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/frappe/frappe-bench/apps/frappe/frappe/utils/messages.py", line 118, in msgprint
+    _raise_exception()
+    ~~~~~~~~~~~~~~~~^^
+  File "/home/frappe/frappe-bench/apps/frappe/frappe/utils/messages.py", line 59, in _raise_exception
+    raise exc
+frappe.exceptions.DoesNotExistError: LMS Certificate CERT-2026-0001 not found
+
+LMS Certificate CERT-2026-0001 not found

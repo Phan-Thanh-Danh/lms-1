@@ -1,0 +1,12 @@
+.git
+output/
+env/
+.venv/
+venv/
+__pycache__/
+*.pyc
+logs/
+outputs/
+my-docs/
+node_modules/
+.next/
